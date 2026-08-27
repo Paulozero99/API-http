@@ -1,4 +1,5 @@
 import http from 'node:http'
+import {URL} from 'node:url'
 
 const PORTA = 3000
 
@@ -9,6 +10,8 @@ let tarefas = [
 
 const servidor = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json; charset=utf-8')
+
+    const urlObj = new URL(req.url, `http://${req.headers.host}`)
 
     if(req.method == 'GET' && req.url == '/tarefas'){
         res.statusCode = 200
