@@ -18,6 +18,13 @@ const servidor = http.createServer((req, res) => {
 
         res.end(JSON.stringify(tarefas))
     }
+    else if(req.method == 'GET' && urlObj.pathname == '/tarefas/busca'){
+        const titulo = urlObj.searchParams.get('titulo')
+
+        const tituloEncotrado = tarefas.filter(tarefa => tarefa.titulo.includes(titulo))
+
+        res.end(JSON.stringify(tituloEncotrado))
+    }
     else if(req.method == 'POST' && req.url == "/tarefa"){
         let body = ''
 
