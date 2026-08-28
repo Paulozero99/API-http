@@ -19,8 +19,10 @@ const servidor = http.createServer((req, res) => {
         res.end(JSON.stringify(tarefas))
     }
     else if(req.method == 'GET' && urlObj.pathname == '/tarefas/busca'){
+        //o get captura os valores que são atribuidos ao parametro titulo
         const titulo = urlObj.searchParams.get('titulo')
 
+        //o uso do includes se dá pelo fato de permitir que visualizemos se uma string possui aqueles caracteres
         const tituloEncotrado = tarefas.filter(tarefa => tarefa.titulo.includes(titulo))
 
         res.end(JSON.stringify(tituloEncotrado))
