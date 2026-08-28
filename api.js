@@ -11,6 +11,9 @@ let tarefas = [
 const servidor = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json; charset=utf-8')
 
+    //o primeiro argumento do objeto da classe URL é o caminho da API e o segundo argumento é o endereçço onde a API está sendo hospedada
+    //mas uma coisa muito importante é que o segundo não é exatamente "onde a API está sendo hospedada", mas sim uma URL base para transforma o primeiro
+    //argumento(que pode ser realtivo) em uma URL completa
     const urlObj = new URL(req.url, `http://${req.headers.host}`)
 
     if(req.method == 'GET' && req.url == '/tarefas'){
@@ -18,6 +21,8 @@ const servidor = http.createServer((req, res) => {
 
         res.end(JSON.stringify(tarefas))
     }
+    //usamos urlObj.pathname ao invés de req.url, pois estamos verficando se tudo o que vem antes da query string é igual a "/tarefas/busca"
+    //pois o req.url retornaria "/tarefas/busca?titulo=algumacoisa", o que não permitiria tratar diferentes atribuiçãos para os parametros da query sting
     else if(req.method == 'GET' && urlObj.pathname == '/tarefas/busca'){
         //o get captura os valores que são atribuidos ao parametro titulo
         const titulo = urlObj.searchParams.get('titulo')
