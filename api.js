@@ -1,4 +1,5 @@
 import http from 'node:http'
+import { url } from 'node:inspector'
 import {URL} from 'node:url'
 
 const PORTA = 3000
@@ -45,7 +46,8 @@ const servidor = http.createServer((req, res) => {
 
                 if(!novaTarefa.titulo){
                     res.statusCode = 400
-                    res.end(JSON.stringify({error: `O campo titulo é obrigatório`}))
+
+                    return res.end(JSON.stringify({error: `O campo titulo é obrigatório`}))
                 }
                 
                 const tarefaCriada = {
@@ -64,6 +66,18 @@ const servidor = http.createServer((req, res) => {
             }
         })
     }
+    //usamos o metodo DELETE quando queremos deletar/remover alguma coisa do sistema
+    else if(req.method == 'DELETE' && urlObj.pathname == 'tarefas/remover'){
+        const id = parseInt(urlObj.search.get('index'))
+
+        //o priemeiro argumento do splice server para a partir dele definir a posição queremos começar
+        //a modificar um array, o segundo argumento serve para dizermos quantos itens queremos remover a partir 
+        //da posição defina no primeiro parâmetro
+        tarefas.splice(id, 1)
+
+        res.end(`Tarefa removida com sucesso`)
+    }
+    
     else{
         res.statusCode = 404
         res.end(JSON.stringify({error: 'Página não encontrada'}))
